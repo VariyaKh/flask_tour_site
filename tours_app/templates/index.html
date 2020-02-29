@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block header %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+{% endblock %}
+
+{% block content %}
+<main class="container mt-3">
+  <!-- HERO -->
+  <section class="jumbotron text-center mt-4" style="background: rgba(64, 204, 209, 0.2)" )>
+    <h1 class="display-4" style="color:black">Туры</h1>
+    <p class="lead">{{ subtitle }}</p>
+    <p class="mt-5 w-50 mx-auto">{{ description }}</p>
+  </section>
+  <!-- CARDS -->
+  <div class="row mt-5">
+    {% for i, tour in (tours.items() | sort(attribute='1.stars', reverse=True))[:6] %}
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="embed-responsive embed-responsive-16by9">
+          <img class="card-img-top embed-responsive-item" src="{{ tour.picture }}" alt="" />
+        </div>
+        <div class="card-body">
+          <h2 class="h5 card-title">{{ tour.country }}: {{ tour.title | truncate(20, True)}}</h2>
+          <p class="h5 card-title">{% for i in  range(tour.stars|int) %}★{% endfor %}</p>
+          <p class="card-text mb-3">{{ tour.description | truncate(150, True) }}</p>
+          <p class="h6 card-text mb-3">{{ tour.date }}, {{ tour.nights }} ночей, {{ tour.price }} руб.</p>
+          <a href="/tour/{{ i }}/" class="btn btn-sm btn-primary float-right">Подробнее</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+</main>
+{% endblock %}

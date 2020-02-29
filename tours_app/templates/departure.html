@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="container mt-3">
+  <h1 class="display-5 mt-4"> Летим из {{ departures[departure_code].split(' ')[-1] }} </h1>
+  {% set the_tours = tours.values() %}
+  {% set count_tours = the_tours | length %}
+  <p class="mb-4">Найдено {{ count_tours }} {%if count_tours in [2, 3, 4] %} тура {% else %} {%if count_tours == 1%} тур
+    {% else %} туров {% endif %}{% endif %}, от {{ (the_tours | min(attribute="price")).price}} до
+    {{ (the_tours | max(attribute="price")).price}} и от {{ (the_tours | min(attribute="nights")).nights}} ночей до
+    {{ (the_tours | max(attribute="nights")).nights}} ночей</p>
+  <!-- CARDS -->
+  <div class="row mt-5">
+    {% for i, tour in tours.items() | sort(attribute="1.price") %}
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="embed-responsive embed-responsive-16by9">
+          <img class="card-img-top embed-responsive-item" src="{{ tour.picture }}" alt="" />
+        </div>
+        <div class="card-body">
+          <h2 class="h5 card-title">{{ tour.country }}: {{ tour.title | truncate(20, True)}}</h2>
+          <p class="h5 card-title">{% for i in  range(tour.stars|int) %}★{% endfor %}</p>
+          <p class="card-text mb-3">{{ tour.description | truncate(150, True) }}</p>
+          <p class="h6 card-text mb-3">{{ tour.date }}, {{ tour.nights }} ночей, {{ tour.price }} руб.</p>
+          <a href="/tour/{{ i }}/" class="btn btn-sm btn-primary float-right">Подробнее</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}
